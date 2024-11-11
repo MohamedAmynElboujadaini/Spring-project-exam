@@ -4,7 +4,6 @@ pipeline {
     stages {
         stage("Build Artefact") {
             steps {
-                echo "reached checkpoint"
                 script {
                     // Clean and build the Maven project
                     sh "mvn clean install"
