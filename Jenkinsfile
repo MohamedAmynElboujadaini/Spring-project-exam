@@ -4,12 +4,8 @@ pipeline {
     stages {
         stage("Build Artefact") {
             steps {
-                script {
-    sh 'echo $SHELL'
-    sh 'docker --version'
-    sh 'docker compose --version'
-}
-
+                echo "Starting the build process..."
+                bat "mvn clean install"
             }
         }
 
@@ -17,7 +13,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker images using Docker Compose
-                    sh "docker compose build"
+                    bat "docker-compose build"
                 }
             }
         }
@@ -25,8 +21,8 @@ pipeline {
         stage("Deploy") {
             steps {
                 script {
-                    // Deploy services in detached mode
-                    sh "docker compose up -d"
+                    // Deploy services in detached mode using Docker Compose
+                    bat "docker-compose up -d"
                 }
             }
         }
@@ -34,12 +30,11 @@ pipeline {
 
     post {
         always {
-            // Ensure Docker containers are gracefully stopped and then removed
             echo "Stopping Docker containers..."
             script {
-                // Gracefully stop the containers and remove volumes
-                sh "docker compose stop || true"
-                sh "docker compose down -v || true"
+                // Gracefully stop the containers and remove volumes using Docker Compose
+                bat "docker-compose stop || true"
+                bat "docker-compose down -v || true"
             }
         }
         success {
