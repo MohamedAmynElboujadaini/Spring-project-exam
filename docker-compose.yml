@@ -3,7 +3,7 @@ version: '3.8'
 services:
   db:
     container_name: springdatarest-db
-    image: mysql:8.0
+    image: mysql:latest
     restart: always
     environment:
       MYSQL_DATABASE: 'madb'
@@ -37,7 +37,7 @@ services:
 
   front:
     build:
-      context: ./  # This is the path to the directory with the Dockerfile
+      context: ./src/main/webapp/reactjs  
       dockerfile: Dockerfile  # Specify the Dockerfile if it's named differently
     depends_on:
       - server
