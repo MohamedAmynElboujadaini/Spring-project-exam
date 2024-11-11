@@ -20,39 +20,31 @@ pipeline {
             }
         }
 
-
         stage("Deploy") {
             steps {
                 script {
                     // Deploy services in detached mode
-                    sh "docker compose up "
+                    sh "docker compose up -d"
                 }
             }
         }
     }
 
-post {
-    always {
-        // Ensure Docker containers are gracefully stopped and then removed
-        echo "Stopping Docker containers..."
-        script {
-            try {
-                // Gracefully stop the containers
+    post {
+        always {
+            // Ensure Docker containers are gracefully stopped and then removed
+            echo "Stopping Docker containers..."
+            script {
+                // Gracefully stop the containers and remove volumes
                 sh "docker compose stop || true"
-                
-                // Bring down the containers and remove volumes
                 sh "docker compose down -v || true"
-            } catch (Exception e) {
-                echo "Error occurred during Docker cleanup: ${e.getMessage()}"
             }
         }
+        success {
+            echo "Pipeline executed successfully!"
+        }
+        failure {
+            echo "Pipeline execution failed!"
+        }
     }
-    success {
-        echo "Pipeline executed successfully!"
-    }
-    failure {
-        echo "Pipeline execution failed!"
-    }
-}
-
 }
