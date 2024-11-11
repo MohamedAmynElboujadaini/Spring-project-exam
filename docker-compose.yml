@@ -19,12 +19,14 @@ services:
       - app_network
 
   server:
-    image: myimage22
+    build:
+      context: .  # This is the path to the directory with the Dockerfile
+      dockerfile: Dockerfile  # Specify the Dockerfile if it's named differently
     depends_on:
       - db
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/madb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: safouat
+      SPRING_DATASOURCE_USERNAME: amyn
       SPRING_DATASOURCE_PASSWORD: '111'
       SPRING_APPLICATION_NAME: SpringDataRest
       SERVER_PORT: 9093
@@ -34,7 +36,9 @@ services:
       - app_network
 
   front:
-    image: frontend
+    build:
+      context: ./  # This is the path to the directory with the Dockerfile
+      dockerfile: Dockerfile  # Specify the Dockerfile if it's named differently
     depends_on:
       - server
     ports:
