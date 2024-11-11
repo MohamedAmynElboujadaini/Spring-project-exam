@@ -4,7 +4,12 @@ pipeline {
     stages {
         stage("Build Artefact") {
             steps {
-                echo "hello"
+                script {
+    sh 'echo $SHELL'
+    sh 'docker --version'
+    sh 'docker compose --version'
+}
+
             }
         }
 
