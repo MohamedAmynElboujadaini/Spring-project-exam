@@ -31,17 +31,28 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            // Ensure Docker containers are stopped after the pipeline execution
-            echo "Cleaning up Docker containers..."
-            sh "docker compose down || true"
-        }
-        success {
-            echo "Pipeline executed successfully!"
-        }
-        failure {
-            echo "Pipeline execution failed!"
+post {
+    always {
+        // Ensure Docker containers are gracefully stopped and then removed
+        echo "Stopping Docker containers..."
+        script {
+            try {
+                // Gracefully stop the containers
+                sh "docker compose stop || true"
+                
+                // Bring down the containers and remove volumes
+                sh "docker compose down -v || true"
+            } catch (Exception e) {
+                echo "Error occurred during Docker cleanup: ${e.getMessage()}"
+            }
         }
     }
+    success {
+        echo "Pipeline executed successfully!"
+    }
+    failure {
+        echo "Pipeline execution failed!"
+    }
+}
+
 }
