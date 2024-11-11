@@ -4,10 +4,8 @@ pipeline {
     stages {
         stage("testing") {
             steps {
-                script {
-                    // Clean and build the Maven project
-                    echo "First stage"
-                }
+                echo "first stage"
+
             }
         }
 
