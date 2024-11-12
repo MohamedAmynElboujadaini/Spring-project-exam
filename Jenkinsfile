@@ -11,7 +11,7 @@ pipeline {
                 stage("Test Vulnerabilities With SonarQube") {
             steps {
                 script {
-                    // Run SonarQube analysis
+                    withSonarQubeEnv('SonarQube') {
                     bat """
 mvn clean verify sonar:sonar \
   -Dsonar.projectKey=sonarspring \
@@ -19,6 +19,7 @@ mvn clean verify sonar:sonar \
   -Dsonar.host.url=http://localhost:9000 \
   -Dsonar.token=sqp_630b0d66ea4c8f287025e823080e63701c0d0031
                     """
+                }
                 }
             }
         }
