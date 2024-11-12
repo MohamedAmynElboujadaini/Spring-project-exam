@@ -8,6 +8,20 @@ pipeline {
                 bat "mvn clean install"
             }
         }
+                stage("Test Vulnerabilities With SonarQube") {
+            steps {
+                script {
+                    // Run SonarQube analysis
+                    sh """
+mvn clean verify sonar:sonar \
+  -Dsonar.projectKey=sonarspring \
+  -Dsonar.projectName='sonarspring' \
+  -Dsonar.host.url=http://localhost:9000 \
+  -Dsonar.token=sqp_630b0d66ea4c8f287025e823080e63701c0d0031
+                    """
+                }
+            }
+        }
 
         stage("Build Docker Images") {
             steps {
