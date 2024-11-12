@@ -23,12 +23,11 @@ mvn clean verify sonar:sonar \
             }
         }
 
-        stage('Quality Gate Check') {
+        stage('Quality Gate') {
             steps {
-                timeout(time: 3, unit: 'MINUTES') { // Wait for up to 2 minutes
-                    waitForQualityGate(abortPipeline: true) // Abort pipeline if quality gate fails
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
-                echo "SonarQube quality gate passed successfully amyn!"
             }
         }
 
