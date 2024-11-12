@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     // Run SonarQube analysis
-                    sh """
+                    bat """
 mvn clean verify sonar:sonar \
   -Dsonar.projectKey=sonarspring \
   -Dsonar.projectName='sonarspring' \
